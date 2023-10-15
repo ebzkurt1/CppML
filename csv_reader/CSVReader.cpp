@@ -2,32 +2,33 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <sstream>
 #include "CSVReader.h"
 
 
 using namespace std;
 
 
-template <typename T>
-CSVReader<T>::CSVReader(const string &filename, const char delim)
-    : filename(filename), delim(delim){ }
+CSVReader::CSVReader(const string &filename, const string dataType, const char delim)
+    : filename(filename), dataType(dataType), delim(delim){ }
 
-template <typename T>
-vector<vector<T>> CSVReader<T>::readCSV(){
-    vector<vector<T>> data;
+
+vector<vector<int>> CSVReader::readCSV(){
+    vector<vector<int>> data;
     ifstream file(filename);
     string line;
 
     while(getline(file, line)){
-        vector<T> row;
-        istringstream lineStream(line);
-        string cell;
+        vector<int> row;
+        stringstream ss(line);
+        string token;
 
-        while(getline(ss, cell, delim)){
-            istringstream cellStream(cell);
-            T token;
-            if(cellStream >> token){
-                row.push_back(token);
+        while(getline(ss, token, delim)){
+            try{
+                int value = stoi(token);
+                row.push_back(value);
+            }catch(const invalid_argument &e){
+                cout << "Invalid input, not an integer: " << e.what() << endl;
             }
         }
         data.push_back(row);

@@ -9,14 +9,14 @@
 using namespace std;
 
 
-template <typename T>
 class CSVReader{
     public:
-        CSVReader(const string &filename, const char delim = ',');
-        vector<vector<T>> readCSV();
+        CSVReader(const string &filename, const string dataType = "int",  const char delim = ',');
+        vector<vector<int>> readCSV();
 
     private:
         string filename;
+        string dataType;
         char delim;
 };
 #endif
