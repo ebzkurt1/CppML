@@ -8,7 +8,7 @@ using namespace std;
 
 
 int main(){
-    CSVReader reader("../sampleData/Iris.csv");
+    CSVReader reader("Iris.csv");
     vector<vector<int>> data = reader.readCSV();
     cout << "Data:" << endl;
     for(const auto &row : data){
