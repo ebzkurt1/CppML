@@ -9,26 +9,27 @@
 using namespace std;
 
 
-CSVReader::CSVReader(const string &filename, const string dataType, const char delim)
-    : filename(filename), dataType(dataType), delim(delim){ }
+CSVReader::CSVReader(const string &filename, const char delim)
+    : filename(filename), delim(delim) { }
 
 
-vector<vector<int>> CSVReader::readCSV(){
-    vector<vector<int>> data;
+template<typename T>
+vector<vector<T>> CSVReader::readCSV(DataType dataType){
+    vector<vector<T>> data;
     ifstream file(filename);
     string line;
 
     while(getline(file, line)){
-        vector<int> row;
+        vector<T> row;
         stringstream ss(line);
         string token;
 
         while(getline(ss, token, delim)){
             try{
-                int value = stoi(token);
+                T value = static_cast<T>(stod(token));
                 row.push_back(value);
             }catch(const invalid_argument &e){
-                cout << "Invalid input, not an integer: " << e.what() << endl;
+                cout << "Error converting input value to specific type: " << e.what() << endl;
             }
         }
         data.push_back(row);
@@ -37,3 +38,7 @@ vector<vector<int>> CSVReader::readCSV(){
 
     return data;
 }
+
+
+template vector<vector<int>> CSVReader::readCSV<int>(DataType dataType);
+template vector<vector<float>> CSVReader::readCSV<float>(DataType dataType);
